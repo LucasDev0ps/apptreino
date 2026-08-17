@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lumis Fitness</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Manifest para virar PWA -->
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    nav { background: #007AFF; color: white; padding: 10px; text-align: center; }
+    .container { padding: 20px; }
+    .card { background: #f5f5f5; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
+    button { background: #007AFF; color: white; border: none; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <nav>Lumis Fitness</nav>
+  <div class="container" id="app">
+    <!-- Dashboard -->
+    <div id="dashboard">
+      <h2>Dashboard</h2>
+      <div class="card">Treinos Semana: <span id="treinosSemana">0</span></div>
+      <div class="card">Cardio (km): <span id="cardioKm">0</span></div>
+      <div class="card">Peso Atual: <span id="pesoAtual">--</span></div>
+    </div>
+
+    <!-- Registrar Treino -->
+    <div id="registrarTreino">
+      <h2>Registrar Treino</h2>
+      <label>Grupo Muscular:</label><br>
+      <input id="grupo" type="text"><br><br>
+      <label>Exercício:</label><br>
+      <input id="exercicio" type="text"><br><br>
+      <label>Carga (kg):</label><br>
+      <input id="carga" type="number"><br><br>
+      <label>Repetições:</label><br>
+      <input id="reps" type="number"><br><br>
+      <button onclick="salvarTreino()">Salvar Treino</button>
+    </div>
+  </div>
+
+  <script>
+    // Salvamento local
+    function salvarTreino() {
+      const treino = {
+        grupo: document.getElementById('grupo').value,
+        exercicio: document.getElementById('exercicio').value,
+        carga: document.getElementById('carga').value,
+        reps: document.getElementById('reps').value,
+        data: new Date().toLocaleDateString()
+      };
+      let historico = JSON.parse(localStorage.getItem('treinos')) || [];
+      historico.push(treino);
+      localStorage.setItem('treinos', JSON.stringify(historico));
+      alert("Treino salvo!");
+      atualizarDashboard();
+    }
+
+    function atualizarDashboard() {
+      let historico = JSON.parse(localStorage.getItem('treinos')) || [];
+      document.getElementById('treinosSemana').innerText = historico.length;
+      // Peso e cardio podem ser adicionados depois
+    }
+
+    atualizarDashboard();
+  </script>
+</body>
+</html>
